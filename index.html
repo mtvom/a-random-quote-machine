@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A Random Quote Machine</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.5/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      const QUOTES = [
+        { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+        { text: "The Pacific is inconstant and uncertain like the soul of man.", author: "William Somerset M." },
+        { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+        { text: "Well done is better than well said.", author: "Benjamin Franklin" },
+        { text: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" },
+        { text: "Imagination is more important than knowledge.", author: "Albert Einstein" },
+        { text: "Not all those who wander are lost.", author: "J.R.R. Tolkien" },
+        { text: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci" },
+      ];
+
+      function pickQuote(current) {
+        let next;
+        do {
+          next = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+        } while (next === current);
+        return next;
+      }
+
+      function App() {
+        const [quote, setQuote] = useState(() => pickQuote(null));
+
+        const tweetUrl =
+          "https://twitter.com/intent/tweet?text=" +
+          encodeURIComponent('"' + quote.text + '" ' + quote.author);
+
+        return (
+          <div id="quote-box">
+            <p id="text">{quote.text}</p>
+            <p id="author">{quote.author}</p>
+            <div className="buttons">
+              <a id="tweet-quote" href={tweetUrl} target="_blank" rel="noreferrer">
+                Tweet
+              </a>
+              <button id="new-quote" onClick={() => setQuote(pickQuote(quote))}>
+                New quote
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+  </body>
+</html>
